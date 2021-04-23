@@ -9,6 +9,10 @@ pd.set_option('display.width', 1000)
 pd.set_option('display.max_columns', 1000)
 pd.set_option('expand_frame_repr', False)
 import collections
+import sys
+sys.path.append(r'./MyData')
+import Data_manage
+from Data_manage import *
 
 
 # 定义一棵决策树
@@ -195,18 +199,18 @@ class RandomForestClassifier(object):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv("C:/Users/YH/Desktop/RandomForest-master/source/wine.txt")
+    df = pd.read_csv("C:/Users/YH/Desktop/blue1.txt")
     df = df[df['label'].isin([1, 2])].sample(frac=1, random_state=66).reset_index(drop=True)
     clf = RandomForestClassifier(n_estimators=5,
                                  max_depth=5,
-                                 min_samples_split=6,
+                                 min_samples_split=3,
                                  min_samples_leaf=2,
                                  colsample_bytree="sqrt",
                                  subsample=0.8,
                                  random_state=66)
     train_count = int(0.7 * len(df))#训练集的长度
-    clf.fit(df.loc[:train_count, 'Alcohol':'Proline'], df.loc[:train_count, 'label'])
+    clf.fit(df.loc[:train_count, '1':'10'], df.loc[:train_count, 'label'])
 
     from sklearn import metrics
-    print(metrics.accuracy_score(df.loc[:train_count, 'label'], clf.predict(df.loc[:train_count,'Alcohol':'Proline'])))
-    print(metrics.accuracy_score(df.loc[train_count:, 'label'], clf.predict(df.loc[train_count:, 'Alcohol':'Proline'])))
+    print(metrics.accuracy_score(df.loc[:train_count, 'label'], clf.predict(df.loc[:train_count,'1':'10'])))
+    print(metrics.accuracy_score(df.loc[train_count:, 'label'], clf.predict(df.loc[train_count:, '1':'10'])))

@@ -38,3 +38,14 @@ def draw(values):
     ax.grid(True)
  
     plt.show()
+
+def ANA(value):
+    D=[]
+    D[0]=value['红色']
+    D[1]=value['绿色']
+    D[2]=value['蓝色']
+    D[3]=value['黄色']
+    D[4]=value['白色']
+    for i in range(len(D)):
+        if max < D[i]:
+            max=D[i]
