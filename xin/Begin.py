@@ -15,8 +15,10 @@ import GetData
 from GetData import *
 import tkinter
 from tkinter import * 
+
 #UI
 user=login_page()
+#stat_result=use_id_get_game_data.get_handled_data()
 #获取用户数据，用户数据处理
 #调用训练好的模型
 #传出每个颜色的百分比
@@ -27,6 +29,7 @@ value_dic={
     '白色':0,
     '黄色':0
 }
+
 '''
 red_game_data=red_sta(game_data)
 blue_game_data=blue_sta(game_data)
@@ -42,4 +45,3 @@ value_dic['黄色']=yellow_tree(_yellow_game_data)
 draw(value_dic)
 ANA(value_dic)
 '''
-

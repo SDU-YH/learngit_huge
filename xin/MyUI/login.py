@@ -8,11 +8,12 @@ import UI
 from UI import *
 class login_page:
     def __init__(self):
+        
         self.login_window=tk.Tk()
         self.login_window.geometry("400x300+800+400")
-        self.login_window.title('心理分析')
+        self.login_window.title('聆新云心理分析')
         self.canvas =  tk.Canvas(self.login_window,height = 200,width = 500)
-        self.image_file = tk.PhotoImage(file = r'C:\Users\YH\Desktop\C_f.png')
+        self.image_file = tk.PhotoImage(file = r'C:\Users\YH\learngit\xin\image&data\C_f.PNG')
         self.image = self.canvas.create_image(0,0,anchor = 'nw',image = self.image_file)
         self.canvas.pack(side = 'top')
         self.acc_label=tk.Label(self.login_window,text = 'Username:').place(x = 50,y = 160)
@@ -45,8 +46,7 @@ class login_page:
         else:
             if self.usr_pwd==self.true_pwd:
                self.login_window.destroy()
-               window = tk.Tk()
-               BuDemo(window)
-               window.mainloop()
+              
+               ooo=BuDemo(self.usr_name)
             else:
                tk.messagebox.showerror('错误','密码错误')

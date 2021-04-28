@@ -78,7 +78,7 @@ class RandomForestClassifier(object):
             self.colsample_bytree = len(dataset.columns)
 
         for stage in range(self.n_estimators):
-            print(("iter: "+str(stage+1)).center(80, '='))
+            print(("Tree: "+str(stage+1)).center(80, '='))
 
             # bagging方式随机选择样本和特征
             random.seed(random_state_stages[stage])
@@ -192,14 +192,14 @@ class RandomForestClassifier(object):
             for stage, tree in self.trees.items():
                 pred_list.append(tree.calc_predict_value(row))
 
-            pred_label_counts = collections.Counter(pred_list)
-            pred_label = max(zip(pred_label_counts.values(), pred_label_counts.keys()))
+            pred_label_counts = collections.Counter(pred_list)#分类计数 字典{'1':m,'2':n}
+            pred_label = max(zip(pred_label_counts.values(), pred_label_counts.keys()))#把键和值打包成元组 按照第一个元素的值选出最大的即values
             res.append(pred_label[1])
         return np.array(res)
 
 
 if __name__ == '__main__':
-    df = pd.read_csv("C:/Users/YH/Desktop/blue1.txt")
+    df = pd.read_csv(r"C:\Users\YH\learngit\xin\image&data\blue1.txt")
     df = df[df['label'].isin([1, 2])].sample(frac=1, random_state=66).reset_index(drop=True)
     clf = RandomForestClassifier(n_estimators=5,
                                  max_depth=5,
@@ -208,9 +208,11 @@ if __name__ == '__main__':
                                  colsample_bytree="sqrt",
                                  subsample=0.8,
                                  random_state=66)
-    train_count = int(0.7 * len(df))#训练集的长度
-    clf.fit(df.loc[:train_count, '1':'10'], df.loc[:train_count, 'label'])
-
+    #train_count = int(0.7 * len(df))#训练集的长度
+    clf.fit(df.loc[:61, '1':'10'], df.loc[:61, 'label'])
+    
     from sklearn import metrics
-    print(metrics.accuracy_score(df.loc[:train_count, 'label'], clf.predict(df.loc[:train_count,'1':'10'])))
-    print(metrics.accuracy_score(df.loc[train_count:, 'label'], clf.predict(df.loc[train_count:, '1':'10'])))
+    print(metrics.accuracy_score(df.loc[:61, 'label'], clf.predict(df.loc[:61,'1':'10'])))
+    #print(metrics.accuracy_score(df.loc[train_count:, 'label'], clf.predict(df.loc[train_count:, '1':'10'])))
+    a=clf.predict(df.loc[60:,'1':'10'])
+    print(a)
