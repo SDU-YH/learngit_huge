@@ -18,17 +18,20 @@ import Name
 from Name import *
 import Draw
 from Draw import *
+from Data import find_database
+from random import sample
 
 class BuDemo:
     def __init__(self,gggg):
+        self.final_answer=[]
         self.id=gggg
         self.root=tk.Tk()
         self.root.title("聆心云沙盘游戏分析系统")
-        self.root.geometry("1000x490+300+150")
+        self.root.geometry("950x490+600+300")
         self.myphoto=PhotoImage(file=r"C:\Users\YH\learngit\xin\image&data\A_f.png")
         self.myphoto2=PhotoImage(file=r'C:\Users\YH\learngit\xin\image&data\B_f.png')
         self.RF = tk.Button(self.root,
-                            text="开始游戏",
+                            #text="开始游戏",
                             fg="blue",
                             image=self.myphoto2,
                             compound="center",
@@ -41,7 +44,7 @@ class BuDemo:
                             activebackground="red",
                             anchor='n',
                             relief='raised',
-                            text="心理分析",
+                            #text="心理分析",
                             fg="red",
                             font=('Helvetica', 30),
                             image=self.myphoto,
@@ -57,8 +60,7 @@ class BuDemo:
         
         self.name_page=tk.Toplevel()
         self.name_page.title("选择一个合适的名称")
-        self.name_page.geometry('300x300+300+200')
-        
+        self.name_page.geometry('300x300+600+300')
         self.name_label=tk.Label(self.name_page,text='请输入沙盘的名字:').place(x=50,y=80)
         self.namein=Entry(self.name_page,textvariable=self.var_name).place(x=50,y=100)
         self.b4=Button(self.name_page,text='确认名称',command=self.predict_rf)
@@ -67,15 +69,27 @@ class BuDemo:
         self.name_page.mainloop()
 
     def predict_rf(self):
-        
         self.class_name=self.var_name.get()
         print(self.class_name)
         self.root.destroy()
         self.nextpage=tk.Tk()
-        self.nextpage.geometry('700x500')
+        self.nextpage.geometry('700x500+600+300')
         self.nextpage.title("请回答问题")
         self.Q=[]
         self.Op=self.get_answer_from_database()
+        if self.class_name=='我难忘的一堂课':
+            self.A='主题1'
+        if self.class_name=='我的一次生日派对':
+            self.A='主题2'
+        if self.class_name=='我可爱的一家人':
+            self.A='主题3'
+        if self.class_name=='我的一次旅行':
+            self.A='主题4'
+        if self.class_name=='我可爱的家乡':
+            self.A='主题5'
+        self.use_id_get_game_data=Get_gamedata(self.id)
+        self.ffff=self.use_id_get_game_data.get_handled_data(self.A)
+        print(self.ffff)
         '''
         for que_str in self.Que_str:
             self.Q.append(question(self.nextpage,self.Op,que_str))
@@ -85,141 +99,163 @@ class BuDemo:
         self.page2=tk.Toplevel()
         self.page3=tk.Toplevel()
         self.page4=tk.Toplevel()
-        self.page5=tk.Toplevel()'''
+        self.page5=tk.Toplevel()
+        '''
         #for i in range(len(self.Que_str)):
         #self.Q.append(question(self.nextpage,self.Op[1],'你最喜欢的沙具'))
         self.L0=Label(self.nextpage,text='你最喜欢的沙具：')
         self.L0.pack()
         self.v = []
-        op=self.Op[0]
-        for i in op:
+        
+        for i in self.Op[0]:
             self.v.append(IntVar())
-        self.photopath0=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[0]+'.PNG'
+        self.photopath0=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[0][0]+'.PNG'
         self.answer_photo0=PhotoImage(file=self.photopath0)
         self.b0 = Checkbutton(self.nextpage,image=self.answer_photo0,variable=self.v[0])
         self.b0.pack(side='left')
-        self.photopath01=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[1]+'.PNG'
+        self.photopath01=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[0][1]+'.PNG'
         self.answer_photo01=PhotoImage(file=self.photopath01)
         self.b01 = Checkbutton(self.nextpage,image=self.answer_photo01,variable=self.v[1])
         self.b01.pack(side='left')
-        self.photopath02=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[2]+'.PNG'
+        self.photopath02=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[0][2]+'.PNG'
         self.answer_photo02=PhotoImage(file=self.photopath02)
         self.b02 = Checkbutton(self.nextpage,image=self.answer_photo02,variable=self.v[2])
         self.b02.pack(side='left')
-        self.photopath03=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[3]+'.PNG'
+        self.photopath03=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[0][3]+'.PNG'
         self.answer_photo03=PhotoImage(file=self.photopath03)
         self.b03 = Checkbutton(self.nextpage,image=self.answer_photo03,variable=self.v[3])
         self.b03.pack(side='left')
-        self.photopath04=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[4]+'.PNG'
+        self.photopath04=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[0][4]+'.PNG'
         self.answer_photo04=PhotoImage(file=self.photopath04)
         self.b04 = Checkbutton(self.nextpage,image=self.answer_photo04,variable=self.v[4])
         self.b04.pack(side='left')
-        self.button3=Button(self.nextpage,text="下一题",command=self.Q1(self.Op[1])).place(x=300,y=340)
+        self.button3=Button(self.nextpage,text="下一题",command=self.Q1).place(x=300,y=340)
         self.nextpage.mainloop()
+        
     
-    def Q1(self,op):
-        #self.nextpage.destroy()
-        self.nextpage1=tk.Toplevel()
+    def Q1(self):
+        for i in range(len(self.v)):
+            if self.v[i].get()==1:
+                print('find')
+                self.final_answer.append(self.Op[0][i])
+
+        self.nextpage.destroy()
+        self.nextpage1=tk.Tk()
         self.nextpage1.title('请回答问题：')
-        self.nextpage1.geometry('700x500')
+        self.nextpage1.geometry('700x500+600+300')
         self.L1=Label(self.nextpage1,text='哪个沙具能代表你：')
         self.L1.pack()
         self.v1 = []
-        for i in op:
+        for i in self.Op[1]:
             self.v1.append(IntVar())
-        self.photopath10=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[0]+'.PNG'
+        self.photopath10=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[1][0]+'.PNG'
         self.answer_photo10=PhotoImage(file=self.photopath10)
         self.b10 = Checkbutton(self.nextpage1,image=self.answer_photo10,variable=self.v1[0])
         self.b10.pack(side='left')
-        self.photopath11=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[1]+'.PNG'
+        self.photopath11=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[1][1]+'.PNG'
         self.answer_photo11=PhotoImage(file=self.photopath11)
         self.b11 = Checkbutton(self.nextpage1,image=self.answer_photo11,variable=self.v1[1])
         self.b11.pack(side='left')
-        self.photopath12=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[2]+'.PNG'
+        self.photopath12=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[1][2]+'.PNG'
         self.answer_photo12=PhotoImage(file=self.photopath12)
         self.b12 = Checkbutton(self.nextpage1,image=self.answer_photo12,variable=self.v1[2])
         self.b12.pack(side='left')
-        self.photopath13=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[3]+'.PNG'
+        self.photopath13=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[1][3]+'.PNG'
         self.answer_photo13=PhotoImage(file=self.photopath13)
         self.b13 = Checkbutton(self.nextpage1,image=self.answer_photo13,variable=self.v1[3])
         self.b13.pack(side='left')
-        self.photopath14=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[4]+'.PNG'
+        self.photopath14=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[1][4]+'.PNG'
         self.answer_photo14=PhotoImage(file=self.photopath14)
         self.b14 = Checkbutton(self.nextpage1,image=self.answer_photo14,variable=self.v1[4])
         self.b14.pack(side='left')
-        self.button4=Button(self.nextpage1,text="下一题",command=self.Q2(self.Op[2])).place(x=300,y=340)
+        self.button4=Button(self.nextpage1,text="下一题",command=self.Q2).place(x=300,y=340)
         
         self.nextpage1.mainloop()
 
-    def Q2(self,op):
-        #self.nextpage1.destroy()
-        self.nextpage2=tk.Toplevel()
+    def Q2(self):
+        for i in range(len(self.v1)):
+            if self.v1[i].get()==1:
+                print('find')
+                self.final_answer.append(self.Op[1][i])
+        self.nextpage1.destroy()
+        self.nextpage2=tk.Tk()
         self.nextpage2.title('请回答问题：')
-        self.nextpage2.geometry('700x500')
+        self.nextpage2.geometry('700x500+600+300')
         self.L2=Label(self.nextpage2,text='最重要的沙具：')
         self.L2.pack()
         self.v2 = []
-        for i in op:
+        for i in self.Op[2]:
             self.v2.append(IntVar())
-        self.photopath20=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[0]+'.PNG'
+        self.photopath20=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[2][0]+'.PNG'
         self.answer_photo20=PhotoImage(file=self.photopath20)
         self.b20 = Checkbutton(self.nextpage2,image=self.answer_photo20,variable=self.v2[0])
         self.b20.pack(side='left')
-        self.photopath21=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[1]+'.PNG'
+        self.photopath21=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[2][1]+'.PNG'
         self.answer_photo21=PhotoImage(file=self.photopath21)
         self.b21 = Checkbutton(self.nextpage2,image=self.answer_photo21,variable=self.v2[1])
         self.b21.pack(side='left')
-        self.photopath22=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[2]+'.PNG'
+        self.photopath22=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[2][2]+'.PNG'
         self.answer_photo22=PhotoImage(file=self.photopath22)
         self.b22 = Checkbutton(self.nextpage2,image=self.answer_photo22,variable=self.v2[2])
         self.b22.pack(side='left')
-        self.photopath23=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[3]+'.PNG'
+        self.photopath23=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[2][3]+'.PNG'
         self.answer_photo23=PhotoImage(file=self.photopath23)
         self.b23 = Checkbutton(self.nextpage2,image=self.answer_photo23,variable=self.v2[3])
         self.b23.pack(side='left')
-        self.photopath24=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+op[4]+'.PNG'
+        self.photopath24=r'C:\Users\YH\learngit\xin\image&data\M_I\\'+self.Op[2][4]+'.PNG'
         self.answer_photo24=PhotoImage(file=self.photopath24)
         self.b24 = Checkbutton(self.nextpage2,image=self.answer_photo24,variable=self.v2[4])
         self.b24.pack(side='left')
-        self.button5=Button(self.nextpage2,text="提交回答",command=self.get_class_name).place(x=300,y=340)
+        self.button5=Button(self.nextpage2,text="查看天赋",command=self.find_web).place(x=300,y=340)
+        self.button6=Button(self.nextpage2,text="其它沙盘",command=self.back).place(x=380,y=340)
         self.nextpage2.mainloop()
     
-    
+    def find_web(self):
+        for i in range(len(self.v2)):
+            if self.v2[i].get() == 1:
+                
+                self.final_answer.append(self.Op[2][i])
+        self.nextpage2.destroy()
+        print("跳到网页")
+        print(self.final_answer)
+        webbrowser.open('http://localhost:8080')
+    def back(self):
+        for i in range(len(self.v2)):
+            if self.v2[i].get()==1:
+                self.final_answer.append(self.Op[2][i])
+        self.nextpage2.destroy()
+        print('回到首页')
 
 
 
     def openweb(self):
         webbrowser.open("https://lingxinyun.cn/psy/index.html#/HomePage")
 
-    def get_class_name(self):#A:主题1，主题2，主题3
-        if self.class_name=='我难忘的一堂课':
-            A='主题1'
-        if self.class_name=='我的一次生日派对':
-            A='主题2'
-        if self.class_name=='我可爱的一家人':
-            A='主题3'
-        if self.class_name=='我的一次旅行':
-            A='主题4'
-        if self.class_name=='我可爱的家乡':
-            A='主题5'
-        self.use_id_get_game_data=Get_gamedata(self.id)
-        self.ffff=self.use_id_get_game_data.get_handled_data(A)
-
-        print(self.ffff)
+    #def get_class_name(self):#A:主题1，主题2，主题3
+        
 
  
 
     def get_answer_from_database(self):
         print('get_answer')
+        class1=['老爷爷','老奶奶','中年男人','中年女人','工程师','少年','消防员','警察']
+        class2=['蛋糕','蜡烛','果汁','打火机','凳子']
+        class3=[]
+        class4=[]
+        class5=[]
         self.answer_from_database=[]
         if self.class_name=='我难忘的一堂课':
-
+            
+            for i in range(5):
+                self.answer_from_database.append(sample(class1,5))
+           
+            '''
             self.answer_from_database=[['老爷爷','老奶奶','中年男人','中年女人','少年'],
                                         ['警察','消防员','中年男人','老爷爷','工程师'],
                                         ['工程师','中年女人','老奶奶','消防员','少年'],
                                         ['老爷爷','老奶奶','中年男人','中年女人','少年'],
                                         ['老爷爷','老奶奶','中年男人','中年女人','少年']
-            ]
+            ]'''
         if self.class_name=='我的一次生日派对':
             self.answer_from_database=[['蛋糕','蜡烛','果汁','打火机','凳子'],
                                         ['A','B','C','D','E'],

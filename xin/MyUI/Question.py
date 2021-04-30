@@ -4,7 +4,7 @@ from tkinter import *
 class question(Checkbutton):
     def __init__(self,root,op,que):
         root.title('请回答问题：')
-        root.geometry('700x500')
+        #root.geometry('700x500+600+300')
         self.L=Label(root,text=que)
         self.L.pack()
         self.v = []
