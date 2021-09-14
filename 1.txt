@@ -1,0 +1,37 @@
+wget -i http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm
+yum -y install mysql57-community-release-el7-10.noarch.rpm
+yum -y install mysql-community-server
+
+systemctl start mysqld.service
+
+systemctl status mysqld.service
+
+grep "password" /var/log/mysqld.log
+
+mysql -uroot -p
+
+set global validate_password_policy=0;  #修改密码安全策略为低（只校验密码长度，至少8位）。
+ALTER USER 'root'@'localhost' IDENTIFIED BY '12345678';
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '12345678';
+
+exit
+
+yum -y install gcc
+
+yum install -y pcre pcre-devel
+
+yum install -y zlib zlib-devel
+
+wget http://nginx.org/download/nginx-1.17.10.tar.gz
+
+tar -zxvf nginx-1.17.10.tar.gz
+
+cd nginx-1.17.10
+./configure
+make && make install
+
+cd /usr/local/nginx/
+sbin/nginx
+
+
